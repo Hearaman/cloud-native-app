@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out the repository...'
+                println 'Checking out the repository...'
                 git url: 'https://github.com/Hearaman/jenkins.git', credentialsId: 'github', branch: 'main'
                 echo 'Repository checked out successfully.'
             }
