@@ -21,10 +21,12 @@ pipeline {
             }
         }
 
-        stage('Scan and push image') {
+        stage('Push to Docker Hub') {
             steps {
                 script {
-					jf 'docker push $DOCKER_IMAGE_NAME'
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                        docker.image(DOCKER_IMAGE).push()
+                    }
                 }
             }
         }
