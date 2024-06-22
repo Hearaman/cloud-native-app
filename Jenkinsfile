@@ -18,23 +18,27 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                echo 'Building the Docker image...'
+                
                 script {
+                    println 'Building the Docker image...'
                     docker.build(DOCKER_IMAGE)
+                    println 'Docker image built successfully.'
                 }
-                echo 'Docker image built successfully.'
+                
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                echo 'Pushing the Docker image to Docker Hub...'
+                
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                    println 'Pushing the Docker image to Docker Hub...'
+                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
                         docker.image(DOCKER_IMAGE).push()
                     }
+                    println 'Docker image pushed to Docker Hub successfully.'
                 }
-                echo 'Docker image pushed to Docker Hub successfully.'
+                
             }
         }
     }
