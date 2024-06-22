@@ -2,17 +2,18 @@ pipeline {
     agent any
 
     environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         GITHUB_CREDENTIALS = credentials('github')
-        DOCKERHUB_CREDENTIALS = credentials('docker')
-        DOCKER_IMAGE = 'hearaman/docker-images/jenkins:1'
+        DOCKER_IMAGE = 'hearaman/docker-images:latest'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Hearaman/jenkins', credentialsId: 'github', branch: 'main'
+                git url: 'https://github.com/Hearaman/jenkins.git', credentialsId: 'github', branch: 'main'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -30,7 +31,6 @@ pipeline {
                 }
             }
         }
-
     }
 
     post {
