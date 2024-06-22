@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker')
+        DOCKERHUB_CREDENTIALS = credentials('Docker')
         GITHUB_CREDENTIALS = credentials('github')
         DOCKER_IMAGE = 'hearaman/docker-images:latest'
     }
