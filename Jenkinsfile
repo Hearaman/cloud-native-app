@@ -3,7 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = "hearaman/cloud-native-app"
+        DOCKER_TAG = 'latest'
         DOCKERHUB_CREDENTIALS = credentials('Docker')
+        DOCKER_USERNAME = 'hearaman'
         GITHUB_CREDENTIALS = credentials('github')
     }
 
@@ -23,12 +25,22 @@ pipeline {
                 }
             }
         }
+        stage('Login to Docker Hub') {      	
+            steps{                       	
+                sh 'echo $DOCKERHUB_CREDENTIALS | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+                echo 'Login Completed'      
+            }           
+        }   
         stage('Push image to Docker hub') {
             steps {
                 script {
                     println 'Pushing Docker image'
-                    sh 'docker login'
-                    sh 'docker push $DOCKER_IMAGE_NAME'
+                    withCredentials([string(credentialsId: 'Docker', variable: 'DOCKERHUB_CREDENTIALS')]) {
+                        sh "echo $DOCKERHUB_CREDENTIALS | docker login -u $DOCKER_USERNAME --password-stdin"
+
+                        // Push the image to Docker Hub
+                        sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+                    }
                 }
             }
         }
