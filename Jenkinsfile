@@ -26,6 +26,8 @@ pipeline {
         stage('Push image to Docker hub') {
             steps {
                 script {
+                    println 'Pushing Docker image'
+                    sh 'docker login'
                     sh 'docker push $DOCKER_IMAGE_NAME'
                 }
             }
