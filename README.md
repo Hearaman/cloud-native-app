@@ -1,2 +1,2 @@
 # jenkins
-demo now.
+demo app that triggers jenkins pipeline
