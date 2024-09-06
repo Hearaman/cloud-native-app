@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-native-app-deployment
+  labels:
+    app: cloud-native-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloud-native-app
+  template:
+    metadata:
+      labels:
+        app: cloud-native-app
+    spec:
+      containers:
+      - name: cloud-native-app-container
+        image: hearaman/cloud-native-app
+        ports:
+        - containerPort: 8080
