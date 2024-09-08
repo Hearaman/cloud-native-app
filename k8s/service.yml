@@ -7,6 +7,8 @@ spec:
     app: cloud-native-app
   ports:
     - protocol: TCP
-      port: 80 
-      targetPort: 80  
-  type: NodePort
+      port: 3000 
+      targetPort: 3000
+  type: LoadBalancer
+  externalIPs:
+  - 45.64.104.244

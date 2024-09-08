@@ -1,15 +1,20 @@
-# Use the official Nginx image from Docker Hub
-FROM nginx:alpine
+# Step 1: Use the official Node.js 18 image as the base image
+FROM node:18
 
-# Remove the default nginx.html file
-RUN rm /usr/share/nginx/html/index.html
+# Step 2: Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Copy your HTML file into the Nginx server
-COPY index.html /usr/share/nginx/html
+# Step 3: Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-# Expose port 80 to the Docker host, so we can access it
-# from the outside.
-EXPOSE 80
+# Step 4: Install the application dependencies
+RUN npm install
 
-# The base image nginx:alpine contains a CMD directive
-# that starts Nginx for us, so we don't need to add it ourselves
+# Step 5: Copy the rest of the application files to the container
+COPY . .
+
+# Step 6: Expose the port that the application will run on
+EXPOSE 3000
+
+# Step 7: Define the command to run the app
+CMD [ "npm", "start" ]
