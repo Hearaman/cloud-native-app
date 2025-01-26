@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out the repository...'
+                echo 'Checking out the repository.'
                 git url: 'https://github.com/Hearaman/cloud-native-app.git', credentialsId: 'github', branch: 'main'
                 echo 'Repository checked out successfully.'
             }
