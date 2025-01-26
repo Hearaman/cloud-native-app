@@ -19,7 +19,7 @@ pipeline {
             }
         }
         
-        /*
+        
         stage('Build Docker image') {
             steps {
                 script {
@@ -41,7 +41,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
         stage('Kustomize Deployment') {
            
@@ -52,7 +52,7 @@ pipeline {
                         // Update image tag
                        
                         // Build manifests
-                        sh "kustomize build manifests/overlays/production/ > manifest.yml"
+                        sh "kustomize build . > manifest.yml"
 
                         // Apply manifests (requires kubectl)
                         sh "kubectl apply -f manifest.yaml"
