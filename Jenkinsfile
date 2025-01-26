@@ -53,7 +53,7 @@ pipeline {
                         if ! command -v ./kustomize &> /dev/null; then
                             echo "kustomize not found. Installing..."
                             curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                            // mv ./kustomize /usr/local/bin/
+                            
                         else
                             echo "kustomize is already installed."
                         fi
