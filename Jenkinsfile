@@ -42,15 +42,10 @@ pipeline {
         }
 
         stage('Kustomize Deployment') {
-            agent {
-                dockerContainer {
-                    image 'registry.k8s.io/kustomize/kustomize:v5.0.0'
-                    remoteFs '/app'
-                    credentialsId DOCKERHUB_CREDENTIALS
-                }
-            }
+           
             steps {
                 script {
+                    sh "which kustomize"
                     dir('/app/manifests/overlays/production') {
                         // Update image tag
                         sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
