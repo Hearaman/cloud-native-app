@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = "hearaman/cloud-native-app"
-        DOCKER_TAG = 'latest' //"${env.BUILD_ID}-${env.GIT_COMMIT.take(8)}"
+        DOCKER_TAG = "${env.BUILD_ID}-${env.GIT_COMMIT.take(8)}"
         DOCKERHUB_CREDENTIALS = credentials('Docker')
         DOCKER_USERNAME = 'hearaman'
         GITHUB_CREDENTIALS = credentials('github')
@@ -19,7 +19,7 @@ pipeline {
             }
         }
         
-        /*
+        
         stage('Build Docker image') {
             steps {
                 script {
@@ -41,7 +41,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
         stage('Kustomize Deployment') {
            
@@ -49,25 +49,14 @@ pipeline {
                 script {
 
                     sh '''
-                        #!/bin/bash
-                        if ! command -v ./kustomize &> /dev/null; then
-                            echo "kustomize not found. Installing..."
-                            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                            
-                        else
-                            echo "kustomize is already installed."
-                        fi
-                    '''
-                    
-                    dir('manifests/overlays/production') {
-                        // Update image tag
-                       
-                        // Build manifests
-                        sh "../../../kustomize build . > manifest.yml"
+                        rm kustomize
+                        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
 
-                        // Apply manifests (requires kubectl)
-                        sh "kubectl apply -f ../../../manifest.yaml"
-                    }
+                        kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+
+                        ./kustomize build manifests/overlays/production  > manifest.yml
+                        kubectl apply -f manifest.yml
+                    '''
                 }
             }
         }
