@@ -1,14 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud-native-app
+  name: cloud-native-app-deployment
 spec:
   replicas: 2
-  template:
-    spec:
-      containers:
-      - name: app
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"

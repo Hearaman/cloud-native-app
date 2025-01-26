@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-native-app-service
+spec:
+  externalIPs:
+  - 45.64.104.244
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: cloud-native-app
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cloud-native-app
+  name: cloud-native-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloud-native-app
+  template:
+    metadata:
+      labels:
+        app: cloud-native-app
+    spec:
+      containers:
+      - image: hearaman/cloud-native-app
+        name: cloud-native-app-container
+        ports:
+        - containerPort: 3000

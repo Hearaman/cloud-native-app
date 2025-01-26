@@ -47,20 +47,15 @@ pipeline {
            
             steps {
                 script {
-                    sh '''
-                        
-                        ./kustomize version
-                    '''
-
+                    
                     dir('manifests/overlays/production') {
                         // Update image tag
-                        sh "./kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-
+                       
                         // Build manifests
-                        sh "./kustomize build . > manifest.yaml"
+                        sh "kustomize build manifests/overlays/production/ > manifest.yml"
 
                         // Apply manifests (requires kubectl)
-                        sh "./kubectl apply -f manifest.yaml"
+                        sh "kubectl apply -f manifest.yaml"
                     }
                 }
             }
