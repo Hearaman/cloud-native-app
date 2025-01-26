@@ -19,7 +19,7 @@ pipeline {
             }
         }
         
-        
+        /*
         stage('Build Docker image') {
             steps {
                 script {
@@ -41,12 +41,14 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Kustomize Deployment') {
            
             steps {
                 script {
+
+                    echo "HOME: $HOME"
                     
                     dir('manifests/overlays/production') {
                         // Update image tag
