@@ -43,7 +43,7 @@ pipeline {
 
         stage('Kustomize Deployment') {
             agent {
-                docker {
+                dockerContainer {
                     image 'registry.k8s.io/kustomize/kustomize:v5.0.0'
                     args '-v $WORKSPACE:/app -v $HOME/.kube:/root/.kube'
                 }
