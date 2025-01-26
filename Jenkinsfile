@@ -66,7 +66,7 @@ pipeline {
                         sh "../../../kustomize build . > manifest.yml"
 
                         // Apply manifests (requires kubectl)
-                        sh "kubectl apply -f manifest.yaml"
+                        sh "kubectl apply -f ../../../manifest.yaml"
                     }
                 }
             }
