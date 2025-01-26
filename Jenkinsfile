@@ -45,7 +45,7 @@ pipeline {
            
             steps {
                 script {
-                    sh "which kustomize"
+                    sh "~/go/bin/kustomize version"
                     dir('/app/manifests/overlays/production') {
                         // Update image tag
                         sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
