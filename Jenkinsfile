@@ -55,7 +55,7 @@ pipeline {
                     '''
 
                     dir('manifests/overlays/production') {
-                        sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+                        sh "../../../kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
 
                         // Build manifests
                         sh "../../../kustomize build . > manifest.yaml"
