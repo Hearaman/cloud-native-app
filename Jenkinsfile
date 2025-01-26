@@ -12,15 +12,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                println 'Checking out the repository...'
-                git url: 'https://github.com/Hearaman/jenkins.git', credentialsId: 'github', branch: 'main'
+                echo 'Checking out the repository...'
+                git url: 'https://github.com/Hearaman/cloud-native-app.git', credentialsId: 'github', branch: 'main'
                 echo 'Repository checked out successfully.'
             }
         }
         stage('Build Docker image') {
             steps {
                 script {
-                    println 'Building Docker image'
+                    echo 'Building Docker image'
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage('Push image to Docker hub') {
             steps {
                 script {
-                    println 'Pushing Docker image'
+                    echo 'Pushing Docker image'
                     withCredentials([string(credentialsId: 'Docker', variable: 'DOCKERHUB_CREDENTIALS')]) {
                         sh "echo $DOCKERHUB_CREDENTIALS | docker login -u $DOCKER_USERNAME --password-stdin"
 
