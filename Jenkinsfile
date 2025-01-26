@@ -45,7 +45,12 @@ pipeline {
            
             steps {
                 script {
-                    sh "~/go/bin/kustomize version"
+                    sh '''
+                        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+                        sudo mv kustomize /usr/local/bin/
+                        kustomize version
+                    '''
+
                     dir('/app/manifests/overlays/production') {
                         // Update image tag
                         sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
