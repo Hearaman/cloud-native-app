@@ -52,7 +52,7 @@ pipeline {
                         ./kustomize version
                     '''
 
-                    dir('/app/manifests/overlays/production') {
+                    dir('manifests/overlays/production') {
                         // Update image tag
                         sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
 
