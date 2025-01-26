@@ -54,13 +54,13 @@ pipeline {
 
                     dir('manifests/overlays/production') {
                         // Update image tag
-                        sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+                        sh "./kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
 
                         // Build manifests
-                        sh "kustomize build . > manifest.yaml"
+                        sh "./kustomize build . > manifest.yaml"
 
                         // Apply manifests (requires kubectl)
-                        sh "kubectl apply -f manifest.yaml"
+                        sh "./kubectl apply -f manifest.yaml"
                     }
                 }
             }
