@@ -53,7 +53,7 @@ pipeline {
                         if ! command -v ./kustomize &> /dev/null; then
                             echo "kustomize not found. Installing..."
                             curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-                            mv ./kustomize /usr/local/bin/
+                            // mv ./kustomize /usr/local/bin/
                         else
                             echo "kustomize is already installed."
                         fi
@@ -63,7 +63,7 @@ pipeline {
                         // Update image tag
                        
                         // Build manifests
-                        sh "kustomize build . > manifest.yml"
+                        sh "../../../kustomize build . > manifest.yml"
 
                         // Apply manifests (requires kubectl)
                         sh "kubectl apply -f manifest.yaml"
