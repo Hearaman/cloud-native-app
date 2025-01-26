@@ -48,7 +48,16 @@ pipeline {
             steps {
                 script {
 
-                    echo "HOME: $HOME"
+                    sh '''
+                        #!/bin/bash
+                        if ! command -v kustomize &> /dev/null; then
+                            echo "kustomize not found. Installing..."
+                            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+                            mv kustomize /usr/local/bin/
+                        else
+                            echo "kustomize is already installed."
+                        fi
+                    '''
                     
                     dir('manifests/overlays/production') {
                         // Update image tag
