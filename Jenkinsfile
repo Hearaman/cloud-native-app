@@ -18,6 +18,8 @@ pipeline {
                 echo 'Repository checked out successfully.'
             }
         }
+        
+        /*
         stage('Build Docker image') {
             steps {
                 script {
@@ -39,7 +41,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Kustomize Deployment') {
            
