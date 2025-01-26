@@ -45,7 +45,7 @@ pipeline {
             agent {
                 dockerContainer {
                     image 'registry.k8s.io/kustomize/kustomize:v5.0.0'
-                    remoteFs remoteFs '/app'
+                    remoteFs '/app'
                     credentialsId DOCKERHUB_CREDENTIALS
                 }
             }
