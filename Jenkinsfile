@@ -52,11 +52,17 @@ pipeline {
                         rm kustomize
                         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
 
-                        kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
-
-                        ./kustomize build manifests/overlays/production  > manifest.yml
-                        kubectl apply -f manifest.yml
                     '''
+
+                    dir('manifests/overlays/production') {
+                        sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+
+                        // Build manifests
+                        sh "../../../kustomize build . > manifest.yaml"
+
+                        // Apply manifests (requires kubectl)
+                        sh "kubectl apply -f ../../../manifest.yaml"
+                    }
                 }
             }
         }
