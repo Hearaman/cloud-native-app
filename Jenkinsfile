@@ -3,10 +3,11 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = "hearaman/cloud-native-app"
-        DOCKER_TAG = 'latest'
+        DOCKER_TAG = "${env.BUILD_ID}-${env.GIT_COMMIT.take(8)}"
         DOCKERHUB_CREDENTIALS = credentials('Docker')
         DOCKER_USERNAME = 'hearaman'
         GITHUB_CREDENTIALS = credentials('github')
+        K8S_NAMESPACE = "production"
     }
 
     stages {
@@ -35,6 +36,29 @@ pipeline {
 
                         // Push the image to Docker Hub
                         sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+                    }
+                }
+            }
+        }
+
+        stage('Kustomize Deployment') {
+            agent {
+                docker {
+                    image 'registry.k8s.io/kustomize/kustomize:v5.0.0'
+                    args '-v $WORKSPACE:/app -v $HOME/.kube:/root/.kube'
+                }
+            }
+            steps {
+                script {
+                    dir('/app/manifests/overlays/production') {
+                        // Update image tag
+                        sh "kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+
+                        // Build manifests
+                        sh "kustomize build . > manifest.yaml"
+
+                        // Apply manifests (requires kubectl)
+                        sh "kubectl apply -f manifest.yaml"
                     }
                 }
             }
