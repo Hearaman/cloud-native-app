@@ -63,7 +63,7 @@ pipeline {
                         sh "mv /tmp/manifest.yaml manifest.yaml"
 
                         // Apply manifests (requires kubectl)
-                        sh "kubectl apply -f manifest.yaml"
+                        sh "kubectl apply -f manifest.yaml --validate=false"
                     }
                 }
             }
