@@ -1,2 +1,2 @@
-# jenkins
-demo app that triggers jenkins pipeline
+# Cloud Native App
+Test app that covers complete cloud native app practice.
