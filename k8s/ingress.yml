@@ -5,6 +5,10 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  tls:
+  - hosts:
+    - hearaman.co.in
+    secretName: hearaman-tls
   rules:
   - host: hearaman.co.in
     http:
